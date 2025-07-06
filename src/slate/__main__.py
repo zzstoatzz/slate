@@ -1,6 +1,13 @@
-"""Entry point for running the slate CLI."""
+"""Entry point for running slate."""
 
-from .cli import cli
+import sys
 
-if __name__ == "__main__":
+if "--mcp" in sys.argv:
+    # Run as MCP server
+    from .mcp_server import mcp
+    import asyncio
+    asyncio.run(mcp.run())
+else:
+    # Run as CLI
+    from .cli import cli
     cli()
