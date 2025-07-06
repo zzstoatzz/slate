@@ -1,13 +1,7 @@
-"""Entry point for running slate."""
+"""Entry point for slate memory MCP server."""
 
-import sys
+from .mcp_server import mcp
+import asyncio
 
-if "--mcp" in sys.argv:
-    # Run as MCP server
-    from .mcp_server import mcp
-    import asyncio
+if __name__ == "__main__":
     asyncio.run(mcp.run())
-else:
-    # Run as CLI
-    from .cli import cli
-    cli()
