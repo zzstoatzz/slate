@@ -1,5 +1,3 @@
-"""SlateDB Event Logger - A demo application for SlateDB."""
+"""SlateDB Memory Server - Persistent MCP memory storage."""
 
-from .event_logger import EventLogger
-
-__all__ = ["EventLogger"]
+__all__ = []

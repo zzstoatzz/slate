@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "click>=8.2.1",
+    "fastmcp>=2.10.2",
     "slatedb>=0.7.0",
 ]
 
