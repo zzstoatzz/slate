@@ -22,6 +22,12 @@ uv add slatedb fastmcp
 Run the MCP server:
 
 ```bash
+# Local storage (default)
+uv run -m slate
+
+# With S3 storage
+export SLATE_S3_BUCKET=your-bucket-name
+export SLATE_S3_PREFIX=your-prefix  # optional
 uv run -m slate
 ```
 
@@ -100,10 +106,28 @@ list_memory_keys("conversation:")
 
 ## Production Considerations
 
-Configure SlateDB to use actual object storage:
+### S3 Configuration
+
+For production deployments (e.g., FastMCP Cloud), configure S3 storage via environment variables:
+
+```bash
+SLATE_S3_BUCKET=your-bucket-name
+SLATE_S3_PREFIX=production  # optional, defaults to 'slate-memory'
+```
+
+AWS credentials are loaded automatically from:
+1. IAM roles (EC2, ECS, Lambda, FastMCP Cloud)
+2. ~/.aws/credentials file
+3. AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables
+
+### Supported Object Storage
+
+SlateDB supports:
 - AWS S3
 - Google Cloud Storage  
 - MinIO
 - Any S3-compatible storage
 
 This provides true "bottomless" memory for AI assistants!
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.

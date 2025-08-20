@@ -1,6 +1,7 @@
 """MCP memory server using SlateDB for persistent storage."""
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -17,8 +18,21 @@ class SlateDBMemory:
 
     def __init__(self, db_path: str = "./slate_memory"):
         self.db_path = Path(db_path)
-        self.db_path.mkdir(exist_ok=True)
-        self.db = slatedb.SlateDB(str(self.db_path))
+        
+        # Check for S3 configuration via environment variables
+        s3_bucket = os.environ.get("SLATE_S3_BUCKET")
+        s3_prefix = os.environ.get("SLATE_S3_PREFIX", "slate-memory")
+        
+        if s3_bucket:
+            # Use S3 backend when configured
+            s3_url = f"s3://{s3_bucket}/{s3_prefix}"
+            print(f"Using S3 storage: {s3_url}")
+            self.db = slatedb.SlateDB(str(self.db_path), url=s3_url)
+        else:
+            # Fall back to local storage
+            self.db_path.mkdir(exist_ok=True)
+            print(f"Using local storage: {self.db_path}")
+            self.db = slatedb.SlateDB(str(self.db_path))
 
     def store(
         self, key: str, value: Any, metadata: dict[str, Any] | None = None
